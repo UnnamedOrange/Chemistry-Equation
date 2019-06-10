@@ -1,0 +1,962 @@
+%\documentclass[UTF8, b4paper, landscape, two column, 10pt]{article}
+\documentclass[UTF8, b5paper, 10pt]{article}
+\usepackage{ctex}
+\usepackage{hyperref}	% 用于交叉引用
+\usepackage{setspace}	% 用于设置行间距
+\usepackage{listings}	% 用于代码高亮
+\usepackage{xcolor}		% 用于处理颜色
+\usepackage{ulem}		% 用于各种线
+\usepackage{amsmath}	% 用于数学公式（如 \begin{align}）
+\usepackage{amsthm}		% 用于数学版式（如 \newtheorem{cmd}{caption}）
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{booktabs}	% 用于表格画线
+\usepackage{graphicx}	% 用于插入图片
+\usepackage[top = 0.7in, bottom = 0.8in, left = 0.6in, right = 0.6in]{geometry} % 设置页边距
+
+\usepackage{multicol}	% 用于设置多栏
+
+\newcommand \insertsubject {{高中化学方程式}}
+
+\hypersetup
+{
+	pdfauthor = Orange,
+	pdftitle = \insertsubject,
+	pdfsubject = \insertsubject,
+	pdfkeywords = \insertsubject,
+	colorlinks = true,
+	linkcolor = black,
+	anchorcolor = black,
+	citecolor = black,
+	urlcolor = black
+}
+
+\author{Orange}
+\date{\today}
+\title{\insertsubject}
+
+\usepackage{ifthen}
+
+\usepackage[version=4]{mhchem}
+\usepackage{chemfig}
+\usepackage{extarrows}
+\usepackage{tikz}
+
+\newcommand*\numcirc[1]{\tikz[baseline=(char.base)]{\node[shape=circle,draw,inner sep=1pt] (char) {#1};}}
+\newcommand \eq[1] {{\xlongequal{\text{#1}}}}
+\newcommand \eqt[2] {{\xlongequal[\text{#2}]{\text{#1}}}} % \ce 不兼容可选参数
+\newcommand \under[2] {\underset{\text{#2}}{\ce{#1}}}
+\newcommand \valence[2] {\overset{#2}{\ce{#1}}}
+\newcommand \heat {\bigtriangleup}
+\newcommand \Heat {$\bigtriangleup$}
+\newcounter {icode}
+\newcommand \cequation[2][]
+{
+
+	\vspace{2mm}
+	{
+		\leftline
+		{
+			\stepcounter{icode}
+			\numcirc{\arabic{icode}}
+			\hspace{3mm}
+			{\large $\ce{#2}$}
+		}
+	}
+	\vspace{2mm}
+
+}
+\newcommand \excequation[2][]
+{
+
+	\vspace{2mm}
+	{
+		\ifthenelse{\value{icode} < 10}
+		{
+			\hspace*{2.35mm}
+		}
+		{
+			\ifthenelse{\value{icode} < 100}
+			{
+				\hspace*{2.50mm}
+			}
+			{
+				\hspace*{3.98mm}
+			}
+		}
+		{\large $\ce{#2}$}
+	}
+	\vspace{2mm}
+
+}
+
+\begin{document}
+
+	\setchemfig{fixed length=true}
+	\thispagestyle{empty}
+
+	\section*{前言}
+
+	犹记 2018 年伊始，我在 \emph{My New Year's Resolutions of 2018} 中用稚嫩但现在反而看不懂的语言写道：
+	\begin{quotation}
+		One year and a half ago, I felt that life in 2020 would be quite different, which means many things would be outdated. Retrospecting(回首) 2017, from my perspective(观点), some things have changed actually, while some ideas are never changing in my mind.
+	\end{quotation}
+
+	In my mind 为何物不必深究，但当 9102 年的我再次看到这段话时，俨然有隔世之感——就算世界没变，我也是完全变了！当我重新面对高考化学时，我感觉我不再是那个高一考过满分的同学了，我化学第一次考试就没及格。
+
+	那次，距及格仅差 3 分。按照老师的话，``有的同学跑到图书馆痛哭了一晚上''。我认真反思，为啥我连格都及不到了？后来发现，原来是因为我一学期有余没学过化学了。
+
+	在认真自学了《选修 4 $\cdot$ 化学反应原理》后，我终于能及格了，不过也仅仅就是及格而已。究其原因，原来元素化合物还没复习呢。``还没学，你就说！''老师虽然对我的进步赞叹不已，我却不能再容忍因为不知道怎么反应而被拍死了！于是就有了这份文档。
+
+	\bigskip
+
+	秉着没有化学方程式就等于``胎儿的手——像一把铲子''的思想，我运匠心打造了这份\emph{\insertsubject}。在方程式的基础上，我适（极）当（少）地补充了相应的知识点，并用先进的 \LaTeX 技术进行了排版。全篇大致按元素化合物的相关反应进行分类，并夹杂了一些其他内容，旨在做到细大不捐。但显然这是不可能的，因为我开始写的时候化学反应原理已经复习完了！
+
+	不管怎么说，我还是实现了目标的一小部分：按一张卷子四页算的话，正好八张卷子。不管你是否和我一样将要面对从未面对过的高考，都希望你能（凭借\emph{\insertsubject}）在化学学科上胜（能）人（够）一（及）筹（格）。由于本人化学水平极低，因此这份文档难免漏洞百出，敬请批评指正。
+
+	另外，那个在图书馆痛哭的不是我。
+
+	\bigskip
+
+	\rightline{Orange}
+
+	\rightline{信键盘涂鸦于 2019 年 3 月 23 日}
+
+	\let\thefootnote\relax\footnotetext{编译于 \today}
+
+	\newpage
+	\pagenumbering{Roman}
+	\setcounter{page}{1}
+	\begin{center}{\LARGE \insertsubject}\end{center}
+	\vspace{3mm}
+	\tableofcontents
+
+	\newpage
+	\setcounter{page}{1}
+	\pagenumbering{arabic}
+	\begin{center}{\LARGE \insertsubject}\end{center}
+	\vspace{3mm}
+
+	\section{\ce{Na}}
+
+	\subsection{\ce{Na} 单质}
+	\cequation{4Na + O2 = \under{2Na2O}{(白色)}}
+	现象：在空气中，银白色固体很快变暗，出现白色固体。
+	\excequation{Na2O + H2O = 2NaOH}
+	现象：白色固体表面变稀。
+	\excequation{2NaOH + CO2 + 9H2O = Na2CO3*10H2O}
+	现象：出现白色块状固体。
+	\excequation{Na2CO3*10H2O = Na2CO3 + 10H2O}
+	现象：白色块状固体变成白色粉末状固体。固体钠露置在空气中完全变质。
+	\cequation{2Na + O2 \eqt{\Heat}{或点燃} \under{Na2O2}{(淡黄色)}}
+	现象：钠在坩埚中受热熔化后，与氧气剧烈反应，发出黄色火焰，生成一种淡黄色固体。
+	\cequation{2Na + Cl2 \eq{点燃} 2NaCl}
+	操作：取小块钠用滤纸吸净煤油，放在石棉网上，用酒精灯微热。待钠熔成球状时，将盛有氯气的集气瓶迅速倒扣在钠的上方。
+
+	现象：钠剧烈燃烧并发出黄色火焰，产生白烟，黄绿色褪去。
+	\cequation{2Na + H2 \eq{催化剂} 2NaH}
+	氢化钠在常温下是固体，具有极强的还原性。
+	\excequation{NaH + H2O = NaOH + H2 ^}
+	\cequation{4Na + 3CO2 \eq{点燃} 2Na2CO3 + C}
+	\cequation{2Na + 2H2O = 2NaOH + H2 ^}
+	操作：在烧杯中加一些水，滴入几滴酚酞溶液，然后把一小块绿豆大的钠放入水中。
+
+	现象：\ce{Na} 浮在水面上，熔成闪亮的小球，四处游动，发出嘶嘶的响声，溶液变红。
+	\cequation{2Na + 2CH3CH2OH -> 2CH3CH2ONa + H2 ^}
+	现象：\ce{Na} 沉于底部，有气泡产生，反应缓慢。
+	\cequation{2Na + 2HCl = 2NaCl + H2 ^}
+	反应速率快。
+	原理：与 \ce{H+} 发生置换反应。
+
+	\subsection{\ce{Na2O}}
+	\cequation{Na2O + H2O = 2NaOH}
+	\cequation{Na2O + CO2 = Na2CO3}
+	\cequation{Na2O + 2HCl = 2NaCl + H2O}
+
+	\subsection{\ce{Na2O2} 的歧化反应}
+	\cequation{Na2O2 + 2H2O = 2NaOH + H2O2}
+	先生成 \ce{H2O2}，\ce{H2O2} 再分解。
+	\cequation{2Na2O2 + 2H2O = 4NaOH + O2 ^}
+	现象：有气体生成；将点燃的木条放在试管口变得更亮；试管外壁温度升高，反应放热；加入酚酞，溶液变红，然后酚酞褪色。
+
+	该反应较为剧烈，不易控制反应速率，一般不用于实验室制取氧气。
+	\cequation{2Na2O2 + 2CO2 = 2Na2CO3 + O2}
+	应用：过氧化钠可用于呼吸面具或潜水艇，作为氧气的来源。
+	\cequation{2Na2O2 + 4HCl = 4NaCl + 2H2O + O2 ^}
+	原理：先与水反应，再与酸中和。
+	\cequation{2Na2O2 + 2SO3(g) = 2Na2SO4 + O2}
+	\ce{SO3} 在标况下是固体，熔点 16.8$^\circ$C，沸点 44.8$^\circ$C。
+
+	\subsection{\ce{Na2O2} 的强氧化性}
+	\cequation{Na2O2 + SO2 = Na2SO4}
+	\cequation{4Na2O2 + 4FeCl2 + 6H2O = 4Fe(OH)3 v + O2 ^ + 8NaCl}
+	现象：生成红褐色沉淀。
+	用量：\ce{Na2O2} : \ce{FeCl2} = 1 : 1，\ce{Fe^3+} 完全沉淀。
+	\excequation{3Na2O2 + 6FeCl2 + 6H2O = 4Fe(OH)3 v + 2FeCl3 + 6NaCl}
+	现象：产生红褐色沉淀。
+	用量：\ce{Na2O2} : \ce{FeCl2} = 1 : 2，\ce{Fe^2+} 完全转化。
+
+	原理：先生成 \ce{OH-}，再生成沉淀。
+	\cequation{Na2O2 + Na2SO3 + H2O = Na2SO4 + 2NaOH}
+	\cequation{\under{Na2O2}{(过量)} + H2S = S v + 2NaOH}
+	\excequation{Na2O2 + \under{3H2S}{(过量)} = S v + 2NaHS + 2H2O}
+	\excequation{(H2S + NaOH = NaHS + H2O)}
+
+	\subsection{\ce{Na2CO3}}
+	\cequation{Na2CO3(s) + 2HCl = 2NaCl + H2O + CO2 ^}
+	向盛少量碳酸钠固体的试管中逐渐滴加稀盐酸，反应直接生成二氧化碳。
+	\cequation{Na2CO3 + HCl = NaHCO3 + NaCl}
+	\cequation{Na2CO3 + x H2O = Na2CO3 * x H2O $\pod{x = 1, 7, 10}$}
+	碳酸钠粉末遇水生成含有结晶水的碳酸钠晶体——水合碳酸钠。碳酸钠晶体在干燥空气里容易逐渐失去结晶水变成碳酸钠粉末，称该过程为风化。
+
+	\subsection{\ce{NaHCO3}}
+	\cequation{2NaHCO3(s) \eq{\Heat} Na2CO3 + H2O + CO2 ^}
+	\ce{NaHCO3} 的热稳定性不及 \ce{Na2CO3}，受热分解生成 \ce{Na2CO3}。
+	\cequation{NaHCO3 + NaAlO2 + H2O = Al(OH)3 v + Na2CO3}
+	原理：强酸制弱酸。
+
+	\subsection{碱金属}
+	\cequation{4Li + O2 \eq{\Heat} 2Li2O}
+	\ce{Li} 与氧气反应只生成 \ce{Li2O}。
+	\cequation{2K + 2H2O = 2KOH + H2 ^}
+	反应相比 \ce{Na} 更剧烈。
+
+	\section{\ce{Al}}
+
+	\subsection{\ce{Al} 单质}
+	\cequation{4Al + 3O2 = 2Al2O3}
+	氧化铝难溶于水，熔点很高，也很坚固，因此覆盖在铝制品表面极薄的一层氧化铝能有效的保护内层金属。它是较好的耐火材料。
+	\cequation{2Al + 3S \eq{\Heat} Al2S3}
+	将铝粉与硫黄混合加入坩埚中，加热制得 \ce{Al2S3}。\ce{Al2S3} 会发生双水解反应，不能在溶液中制得。
+	\excequation{Al2S3 + 6H2O = 2Al(OH)3 + 3H2S ^}
+	\cequation{2Al + 3Cl2 \eq{点燃} 2AlCl3}
+	\cequation{2Al + 6H2O \eq{\Heat} 2Al(OH)3 + 3H2 ^}
+	在沸水中反应。常温下该反应无法持续进行，可加入强碱打破平衡。
+	\cequation{2Al + 6HCl = 2AlCl3 + 3H2 ^}
+	\cequation{2Al + Fe2O3 \eq{高温} Al2O3 + 2Fe}
+	铝热反应。称铝粉和另一金属氧化物组成的混合物为铝热剂。
+
+	实验中引发铝热反应的操作：加入少量 \ce{KClO3}，插上镁条并将其点燃。
+
+	现象：反应迅速并放出大量的热，生成的金属单质呈熔融状态且易与 \ce{Al2O3} 分离。
+
+	应用：焊接钢轨；冶炼熔点高的、相对 \ce{Al} 较不活泼的金属，如 \ce{V}、\ce{Cr}、\ce{Mn} 等。
+	\cequation{2Al + 2NaOH + 2H2O = 2NaAlO2 + 3H2 ^}
+	现象：铝片溶解；产生气泡；将点燃的木条放在试管口有爆鸣声。
+
+	\subsection{\ce{Al2O3}}
+	\cequation{Al2O3 + 6HCl = 2AlCl3 + 3H2O}
+	\cequation{Al2O3 + 2NaOH = 2NaAlO2 + H2O}
+	\cequation{2Al2O3\text{（熔融）} \eqt{电解}{\ce{\under{Na3AlF6}{六氟合铝酸钠(俗名冰晶石)}}} 4Al + 3O2 ^}
+
+	\subsection{\ce{Al(OH)3}}
+	\cequation{Al(OH)3 + OH- = AlO2- + 2H2O}
+	\cequation{Al(OH)3 + 3H+ = Al^3+ + 3H2O}
+	\cequation{2Al(OH)3 \eq{\Heat} Al2O3 + 3H2O}
+	\ce{Al(OH)3} 可作阻燃材料的原因：1. \ce{Al(OH)3} 分解吸热，降低了环境温度；2. 生成了水蒸气，降低了 \ce{O2} 浓度；3. 生成了熔点高的 \ce{Al2O3}。
+
+	\subsection{\ce{Al^3+}}
+	\cequation{Al^3+ + 3NH3*H2O = Al(OH)3 v + 3NH4+}
+	\cequation{Al^3+ + 3OH- = Al(OH)3 v}
+	\cequation{Al^3+ + 4OH- = AlO2- + 2H2O}
+	\cequation{Al2(SO4)3 + 6NaHCO3 = 2Al(OH)3 v + 6CO2 ^ + 3Na2SO4}
+	碳酸氢钠溶液与硫酸铝溶液发生双水解反应，是泡沫灭火器的反应原理。
+
+	\subsection{\ce{AlO2-}}
+	\cequation{AlO2- + \under{CO2}{(过量)} + 2H2O = Al(OH)3 v + HCO3-}
+	\excequation{\under{2AlO2-}{(过量)} + CO2 + 3H2O = 2Al(OH)3 v + CO3^2-}
+	\cequation{AlO2- + HCO3- + H2O = Al(OH)3 v + CO3^2-}
+	原理：强酸制弱酸。
+	\cequation{AlO2- + H+ + H2O = Al(OH)3 v}
+	\cequation{AlO2- + 4H+ = Al^3+ + 2H2O}
+
+	\subsection{\ce{Al^3+} 水解}
+	\cequation{Al^3+ + 3H2O <=> Al(OH)3 + 3H+}
+	\cequation{Al^3+ + 3H2O <=> Al(OH)3\text{（胶体）} + 3H+}
+	应用：利用胶体净水。
+
+	\section{\ce{Fe}}
+
+	\subsection{\ce{Fe} 单质}
+	自然界中，存在铁单质（陨铁）。
+	\cequation{2Fe + 3Cl2 \eq{点燃} 2FeCl3}
+	\ce{Fe} 与 \ce{FeCl3} 只在溶液中反应，故不生成 \ce{FeCl2}，只生成 \ce{FeCl3}。
+	\cequation{2Fe + 3Br2 \eq{点燃} 2FeBr3}
+	\cequation{Fe + I2 \eq{\Heat} FeI2}
+	氧化性 \ce{Fe^3+} > \ce{I2}。
+	\excequation{Fe + S \eq{\Heat} FeS}
+	\excequation{2Cu + I2 \eq{\Heat} 2CuI}
+	\excequation{2Cu + S \eq{\Heat} Cu2S}
+	\cequation{3Fe + \under{2O2}{(纯)} \eq{点燃} \under{Fe3O4}{(俗名磁性氧化铁)}}
+	现象：铁在氧气中剧烈燃烧，火星四射，放出大量的热，生成具有磁性的黑色晶体。
+	\cequation{4Fe + \under{3O2}{(过量)} \eq{高温} 2Fe2O3}
+	\cequation{\under{2Fe(l)}{(过量)} + O2 \eq{高温} 2FeO}
+	在炼钢炉中发生该反应。
+	\cequation{Fe + 4H2O(g) \eq{高温} Fe3O4 + 4H2}
+	实验中将生成的气体通入肥皂液中。现象：加热时试管内铁粉红热；点燃肥皂泡可听到爆鸣声。
+	\cequation{Fe + 2H+ = Fe^2+ + H2 ^}
+	\cequation{\under{3Fe}{(过量)} + 8HNO3 = 3Fe(NO3)2 + 2NO ^ + 4H2O}
+	\excequation{Fe + \under{4HNO3}{(过量)} = Fe(NO3)3 + NO ^ + 2H2O}
+	用量处于中间，则 \ce{Fe} 先与 \ce{NO3-} 反应，再与 \ce{Fe^3+} 反应。
+	\cequation{Fe + H2SO4\text{（浓）} / HNO3\text{（浓）} -> \cdots}
+	铁或铝与浓硫酸或浓硝酸在常温下反应生成致密氧化膜，称为钝化。
+
+	\subsection[二价铁]{\ce{$\valence{Fe}{+2}$}}
+	\cequation{6FeO + O2 \eq{\Heat} 2Fe3O4}
+	\ce{FeO} 是一种黑色粉末。它不稳定，在空气中受热，就迅速被氧化成 \ce{Fe3O4}。
+	\cequation{FeSO4 + 2NaOH = Fe(OH)2 v + Na2SO4}
+	现象：生成的白色絮状沉淀迅速变成灰绿色，最后变成红褐色。
+	\excequation{4Fe(OH)2 + O2 + 2H2O = 4Fe(OH)3}
+	化合反应生成 \ce{Fe(OH)3}。
+	\cequation{2Fe^2+ + H2O2 + 2H+ = 2Fe^3+ + 2H2O}
+	现象：浅绿色溶液变成黄色，不久后产生气泡（生成的 \ce{Fe^3+} 催化 \ce{H2O2} 分解）。
+
+	利用该反应除去 \ce{Fe^3+} 中的 \ce{Fe^2+} 时，不必额外加酸，因为 \ce{Fe^{3+}} 本身就处于酸性环境中。
+	\excequation{\under{2Fe^2+}{(过量)} + ClO- + 5H2O = 2Fe(OH)3 v + Cl- + 4H+}
+	\excequation{2Fe^2+ + \under{5ClO-}{(过量)} + 5H2O = 2Fe(OH)3 v + Cl- + 4HClO}
+	反应先生成 \ce{Fe^3+}，\ce{Fe^3+} 再与 \ce{ClO-} 发生双水解反应。在离子方程式中，\ce{Fe(OH)3} 可与 \ce{H+} 同时出现，因为 \ce{Fe^3+} 极易水解，仅在较强酸性下存在。
+	\cequation{Fe^2+ + 2HCO3- = FeCO3 v + CO2 ^ + H2O}
+	\ce{HCO3-} 必须过量，否则生成的 \ce{H+} 使 \ce{FeCO3} 重新溶解，相当于用过量的 \ce{HCO3-} 打破平衡。\ce{FeCO3} 的溶解度比 \ce{Fe(OH)2} 小，所以不考虑双水解；一般只有 \ce{Fe^3+} 和 \ce{Al^3+} 考虑双水解。
+	\cequation{FeS + H2SO4 = FeSO4 + H2S ^}
+	\excequation{FeS + 2H+ = Fe^2+ + H2S ^}
+	制备 \ce{H2S} 气体。\ce{FeS} 不溶于水、呈块状，可使用启普发生器以控制反应的发生和停止。
+
+	\subsection[三价铁]{\ce{$\valence{Fe}{+3}$}}
+	\cequation{2Fe(OH)3 \eq{\Heat} Fe2O3 + 3H2O}
+	加热 \ce{Fe(OH)3} 时，生成红棕色的 \ce{Fe2O3} 粉末。\ce{Fe2O3} 俗称铁红，常用作红色油漆和涂料。赤铁矿（主要成分是 \ce{Fe2O3}）是炼铁原料。
+	\cequation{FeCl3 + 3H2O \eq{\Heat} Fe(OH)3\text{（胶体）} + 3HCl}
+	制备 \ce{Fe(OH)3} 胶体。\ce{HCl} 在水中极易溶，不打 \ce{^}。
+	\excequation{FeCl3 + 3H2O <=> Fe(OH)3 + 3HCl}
+	\ce{FeCl3} 溶液呈酸性的原因。
+	\excequation{FeCl3 + 3H2O <=> Fe(OH)3\text{（胶体）} + 3HCl}
+	\ce{Fe(OH)3} 净水的原理。
+	\cequation{2FeCl3 + 2NaI = 2FeCl2 + I2 + 2NaCl}
+	氧化性 \ce{Fe^3+} > \ce{I2}。
+	\cequation{2FeCl3 + H2S = 2FeCl2 + 2HCl + S v}
+	利用沉淀弱酸制强酸。
+	\cequation{\under{2Fe^3+}{(过量)} + S^2- = S v + 2Fe^2+}
+	\excequation{2Fe^3+ + \under{3S^2-}{(过量)} = S v + 2FeS v}
+	\ce{Fe^3+} 氧化性较弱，不能再氧化 \ce{S} 单质。
+
+	\subsection{化工中的 \ce{Fe}}
+	\cequation{2Fe(OH)3 + 3NaClO + 4NaOH = \under{2Na2\valence{Fe}{+6}O4}{高铁酸钠} + 3NaCl + 5H2O}
+	制备高铁酸钠。高铁酸钠可杀菌（具有强氧化性）、净水（被还原后会生成 \ce{Fe(OH)3} 胶体）。并不是所有的消毒都涉及氧化还原反应，如酒精消毒。
+	\cequation{4FeO4^2- + 20H+ = 4Fe^3+ + 3O2 ^ + 10H2O}
+	\ce{FeO4^2-} 在碱性环境下比在中性和酸性环境下稳定，在酸性环境下易分解生成 \ce{O2}。
+
+	\subsection{检验 \ce{Fe^2+}、\ce{Fe^3+}}
+	\cequation{Fe^3+ + 3SCN- <=> \under{Fe(SCN)3}{硫氰化铁}}
+	现象：溶液变成血红色。
+	\cequation{Fe^3+ + \chemfig{**[0, 360]6([0, 0.3]---(-OH)---)} -> \cdots}
+	现象：发生显色反应，溶液变成紫色。
+	\cequation{3Fe^2+ + \under{2[Fe(CN)6]^3-}{六氰合铁酸根} = \under{Fe3[Fe(CN)6]2 v}{六氰合铁酸亚铁}}
+	\excequation{3FeCl2 + \under{2K3[Fe(CN)6]}{铁氰化钾(六氰合铁酸钾)} = Fe3[Fe(CN)6]2 v + 6KCl}
+	现象：产生蓝色沉淀。
+	\cequation{5Fe^2+ + MnO4- + 8H+ = 5Fe^3+ + Mn^2+ + 4H2O}
+	\excequation{Fe^3+ + 3SCN- <=> Fe(SCN)3}
+	用于检测 \ce{Fe^2+}。
+	现象：加入酸性高锰酸钾，高锰酸钾溶液褪色；再加入硫氰化钾，溶液变成红色。
+
+	但该反应不能检测 \ce{FeCl2}，因为 \ce{Cl-} 也会使高锰酸钾溶液褪色。
+
+	\section{\ce{Cu}}
+
+	\subsection{\ce{Cu} 单质}
+	\cequation{2Cu + O2 \eq{\Heat} 2CuO}
+	\cequation{2Cu + O2 + H2O + CO2 = \under{Cu2(OH)2CO3}{碱式碳酸铜(俗名铜绿)}}
+	碱式碳酸盐的氢氧根写在碳酸根之前。
+	\excequation{Cu2(OH)2CO3 \eq{\Heat} 2CuO + H2O + CO2}
+	\cequation{Cu + Cl2 \eq{点燃} \under{CuCl2}{(棕黄色)}}
+	\ce{CuCl2} 固体为棕黄色，稀溶液为蓝色，浓溶液为黄绿色（\ce{[CuCl4]^2-}）。
+	\cequation{2Cu + S \eq{\Heat} Cu2S}
+	\cequation{2Cu + I2 = \under{2CuI}{(白色)}}
+	现象：生成不溶于水的白色沉淀。
+	\cequation{Cu + H2O2 + 2H+ = Cu^2+ + 2H2O}
+	\cequation{Cu + 2H2SO4\text{（浓）} \eq{\Heat} CuSO4 + SO2 ^ + 2H2O}
+	反应后有大量灰白色固体，属硫酸铜固体。因浓硫酸有吸水性，故试管中没有水，硫酸铜不变蓝。还有少量黑色的硫化物沉淀生成。
+	\cequation{3Cu + 8HNO3 = 3Cu(NO3)2 + 2NO ^ + 4H2O}
+	\cequation{Cu + 4HNO3\text{（浓）} = Cu(NO3)2 + 2NO2 ^ + 2H2O}
+	\cequation{Cu + 2Fe^3+ = Cu^2+ + 2Fe^2+}
+
+	\subsection{\ce{Cu} 的氧化物}
+	\cequation{CuO + 2H+ = Cu^2+ + H2O}
+	\cequation{Cu2O + 2H+ = Cu^2+ + Cu + H2O}
+	\ce{Cu+} 在酸性环境下易发生歧化反应。
+	\cequation{4CuO \eq{高温} \under{2Cu2O}{(砖红色)} + O2 ^}
+	对于固体，\ce{Cu2O} 的热稳定性比 \ce{CuO} 高。
+	\cequation{CuO + CH3CH2OH ->[\heat] CH3CHO + Cu + H2O}
+	乙醇催化氧化的分反应。
+
+	\subsection{\ce{Cu} 的氢氧化物}
+	\cequation{Cu(OH)2 \eq{\Heat} CuO + H2O}
+	最低温度约 80$^\circ$C。
+	\cequation{R-CHO + 2Cu(OH)2 + NaOH ->[\heat] R-COONa + Cu2O v + 3H2O}
+	检验醛基。现象：产生砖红色沉淀。
+
+	\subsection{\ce{Cu} 的盐}
+	\cequation{CuSO4 + 5H2O = \under{CuSO4*5H2O}{(俗名胆矾、蓝矾)}}
+	应用：检验是否有水。
+	\cequation{2Cu^2+ + 4I- = I2 + \under{2CuI v}{(白色)}}
+	现象：生成白色沉淀。
+	应用：滴定测量 \ce{Cu^2+} 含量：$\ce{I2 + \under{2Na2S2O3}{硫代硫酸钠} = 2NaI + \under{Na2S4O6}{连四硫酸钠}}$。
+	\cequation{\under{Cu^2+}{(过量)} + 2NH3*H2O = Cu(OH)2 v + 2NH4+}
+	\excequation{Cu^2+ + \under{4NH3*H2O}{(过量)} = \under{[Cu(NH3)4]^2+}{四氨合铜离子} + 4H2O}
+	向盛有硫酸铜水溶液的试管里加入氨水，首先形成蓝色沉淀，继续添加氨水，沉淀溶解，得到深蓝色的透明溶液。
+	\excequation{\under{Cu(OH)2}{(蓝色沉淀)} + 4NH3 = \under{[Cu(NH3)4]^2+}{(深蓝色溶液)} + 2OH-}
+	\cequation{2CuS + 3O2 \eq{\Heat} 2CuO + 2SO2}
+
+	\section{金属矿物}
+	\cequation{2Ag2O \eq{\Heat} 4Ag + O2 ^}
+	\excequation{2HgO \eq{\Heat} 2Hg + O2 ^}
+	热分解法冶炼金属。
+	\cequation{Cu2S + O2 \eq{高温} 2Cu + SO2}
+	火法炼铜。生成物是铜单质而非 \ce{Cu2O}。
+	\cequation{CuSO4 + Fe = Cu + FeSO4}
+	湿法炼铜。
+	\cequation{Fe2O3 + 2Al \eq{高温} 2Fe + Al2O3}
+	铝热法炼铁。
+	\cequation{Fe2O3 + 3CO \eq{高温} 2Fe + 3CO2}
+	高炉炼铁。
+	\cequation{\valence{W}{+6}O3 + 3H2 \eq{高温} W + 3H2O}
+	热还原法冶炼金属。
+	\cequation{MgCl2\text{（熔融）} \eq{电解} Mg + Cl2 ^}
+	\excequation{2NaCl\text{（熔融）} \eq{电解} 2Na + Cl2 ^}
+	电解法冶炼金属。
+	\cequation{TiO2 + 2Cl2 + 2C \eq{高温} TiCl4 + 2CO}
+	冶炼金红石（主要成分为 \ce{TiO2}）得到 \ce{TiCl4}。
+	\excequation{TiCl4\text{（熔融）} + 2Mg \eq{\Heat} Ti ^ + 2MgCl2}
+	\cequation{Na + KCl \eq{850$^\circ$C} K ^ + NaCl}
+	\cequation{Mg + 2RbCl \eq{700 $\sim$ 800$^\circ$C} 2Rb ^ + MgCl2}
+
+	\section{\ce{C}}
+
+	\subsection{\ce{C} 特殊的复分解}
+	\cequation{CO2 + NaClO + H2O = HClO + NaHCO3}
+	原理：强酸制弱酸。酸性：\ce{H2CO3} > \ce{HClO} > \ce{HCO3-}。
+	\cequation{\under{Na2CO3}{(饱和)} + CO2 + H2O = 2NaHCO3 v}
+	原理：\ce{NaHCO3} 的溶解度小于 \ce{Na2CO3} 的溶解度。
+	\cequation{NaCl + NH3 + CO2 + H2O = NaHCO3 v + NH4Cl}
+	侯氏制碱法：先向饱和 \ce{NaCl} 溶液中通入氨气至饱和，再通入过量 \ce{CO2} 气体，有 \ce{NaHCO3} 晶体析出，最后灼烧 \ce{NaHCO3} 得到 \ce{Na2CO3}。不先通入 \ce{CO2} 的原因是：\ce{CO2} 溶解度小，且不能通入过量 \ce{NH3}，故先通入 \ce{CO2} 可能无沉淀产生或产量小。
+	\cequation{\under{CO2}{(少量)} + Ca(ClO)2 + H2O = 2HClO + CaCO3 v}
+	原理：\ce{CaCO3} 的溶解度极小，考虑沉淀而非酸性强弱。此为漂白粉生效或失效的原理。
+
+	\subsection{\ce{C} 的氧化还原反应}
+	\cequation{CuO + C \eq{\Heat} Cu + CO ^}
+	作用：热还原法冶炼金属。
+	\cequation{SiO2 + 2C \eq{高温} Si\text{（粗）} + 2CO ^}
+	作用：制取粗硅。
+	\cequation{H2O(g) + C(s) ->[\text{高温}] H2(g) + CO(g)}
+	煤的气化是将其转化为可燃性气体的过程，主要反应是碳与水蒸气反应生成水煤气等。
+
+	煤可以直接液化，使煤与氢气作用生成液体燃料；也可以间接液化，先转化为一氧化碳和氢气，再在催化剂作用下合成甲醇等。
+
+	煤的干馏是指将煤隔绝空气加强热使之分解的过程，工业上也叫煤的焦化。产品包含：出炉煤气（含焦炉气(\ce{H2}、\ce{CH4}、\ce{CH2=CH2}、\ce{CO})、粗氨水、粗苯(苯、甲苯、二甲苯)）、煤焦油、焦炭。
+	\cequation{C + CO2 \eq{高温} 2CO}
+	化合反应一般是放热反应，但该反应是一个吸热的化合反应；解释了高温下一般只生成 \ce{CO} 的原因。
+	\cequation{C + 2H2SO4\text{（浓）} \eq{\Heat} CO2 ^ + 2SO2 ^ + 2H2O}
+	\cequation{C + 4HNO3\text{（浓）} \eq{\Heat} CO2 ^ + 4NO2 ^ + 2H2O}
+
+	\subsection{\ce{CO2}}
+	\cequation{2Mg + CO2 \eq{点燃} 2MgO + C}
+	\cequation{CaCO3 + CO2 + H2O = Ca(HCO3)2}
+	岩石的风化、``水滴石穿''发生该反应。
+
+	\section{\ce{Si}}
+
+	\subsection{\ce{Si} 单质}
+	\cequation{Si + O2 \eq{\Heat} SiO2}
+	硅是亲氧元素，在自然界中只以化合态的形式（氧化物和硅酸盐）存在。
+	\cequation{Si + 2F2 = SiF4}
+	\excequation{Si + 2Cl2 \eq{\Heat} SiCl4}
+	\cequation{3Si + 2N2 \eq{高温} Si3N4}
+	\ce{Si3N4} 是原子晶体，属于新型无机非金属材料。
+	\cequation{Si + 2NaOH + H2O = Na2SiO3 + 2H2 ^}
+	该反应中仅 \ce{H2O} 充当氧化剂。
+	\excequation{(Si + 3H2O = H2SiO3 + 2H2 ^ )}
+	类比铝与水的反应。
+	\cequation{Si + 4HF = SiF4 ^ + 2H2 ^}
+
+	\subsection{\ce{SiO2}}
+	\ce{SiO2} 的存在形态有结晶形和无定形两种。\ce{SiO2} 是由 \ce{Si} 和 \ce{O} 按 1 : 2 的比例所组成的立体网状结构的晶体，属于原子晶体，其中的每个 \ce{O} 与 2 个 \ce{Si} 相结合。熔沸点高，是酸性氧化物。是现代光学及光纤制品的基本原料；以之为主要成分的光导纤维是新型无机非金属材料。结晶的 \ce{SiO2} 称为石英。石英玻璃、石英坩埚的成分为 \ce{SiO2}，耐高温。水晶是纯净的二氧化硅，玛瑙是含有杂质的二氧化硅。
+	\cequation{SiO2 + CaO / Na2O \eq{高温} CaSiO3 / Na2SiO3}
+	\cequation{SiO2 + 2NaOH = Na2SiO3 + H2O}
+	储存 \ce{NaOH} 时不能用玻璃塞，只能用橡皮塞；玻璃管或石英玻璃管中不能加热 \ce{NaOH} 固体。
+	\cequation{SiO2 + 2C \eq{高温} Si\text{（粗）} + 2CO ^}
+	\excequation{SiO2 + 3C \eq{高温} \under{SiC}{(俗名金刚砂)} + 2CO ^}
+	\ce{SiC} 属于新型无机非金属材料，具有金刚石结构，硬度很大，可用作砂纸、砂轮的磨料。
+	\cequation{SiO2 + Na2CO3 \eq{高温} Na2SiO3 + CO2 ^}
+	\excequation{SiO2 + CaCO3 \eq{高温} CaSiO3 + CO2 ^}
+	以上两个反应为制取普通玻璃的主要反应。制取普通玻璃的原料为：纯碱、石灰石、石英砂。原料经混合、粉碎，在玻璃窖中熔融制得普通玻璃。普通玻璃的主要成分为：\ce{Na2SiO3}、\ce{CaSiO3}、\ce{SiO2}。
+
+	制取水泥的原料为：黏土（主要成分为硅酸盐）、石灰石。原料经研磨、混合后在水泥回转窖中煅烧，再加入适量石膏，研成细粉就得到普通水泥。
+
+	制取陶瓷的原料为黏土。黏土经高温烧结形成陶瓷。
+	\cequation{SiO2 + 4HF = SiF4 ^ + 2H2O}
+	\ce{SiO2} 与酸的反应中只与 \ce{HF} 反应，不能说明 \ce{SiO2} 是两性氧化物。
+
+	应用：利用 \ce{HF} 刻蚀玻璃。
+
+	\subsection{\ce{H2SiO3} 和硅酸盐}
+	\ce{H2SiO3} 不溶于水，不能使紫色石蕊溶液变红；其酸性比碳酸弱。\ce{Na2SiO3} 固体是白色、可溶于水的粉末状固体，俗称泡花碱。\ce{Na2SiO3} 溶液俗称水玻璃，有粘性，可作黏合剂；可作木材防火剂的原料，浸过 \ce{Na2SiO3} （饱和）溶液的小木条或滤纸条不能燃烧。
+	\cequation{H2SiO3 \eq{\Heat} SiO2 + H2O}
+	硅酸不稳定，受热易分解。
+	\cequation{Na2SiO3 + 2HCl = H2SiO3\text{（胶体）} + 2NaCl}
+	操作：在 \ce{Na2SiO3} 溶液中滴入酚酞，溶液显红色。逐滴加入稀盐酸并振荡，至溶液红色变浅并接近消失时停止滴加。若加入过量盐酸，得到的将是沉淀，不是胶体。
+
+	硅酸在水中易聚合形成胶体溶液，称为硅酸凝胶。硅酸凝胶干燥脱水后得到多孔的硅酸干凝胶，简称硅胶。硅胶吸附水分能力强，常作实验室、食品、药品的干燥剂。
+	\cequation{\under{Na2SiO3}{(过量)} + CO2 + H2O = H2SiO3 v + Na2CO3}
+	\cequation{Na2CO3 + SiO2 \eq{高温} Na2SiO3 + CO2 ^}
+	\excequation{Na2CO3 + Al2O3 \eq{高温} 2NaAlO2 + CO2 ^}
+	以上两个反应分别解释了不可用石英坩埚或氧化铝坩埚熔融 \ce{Na2CO3} 的原因。类似地，熔融烧碱时，不能用石英坩埚或陶瓷坩埚，可用铁坩埚或石墨坩埚。
+
+	\paragraph{其它具有特殊功能的含硅的物质}
+	\begin{itemize}
+		\item 硅钢：含 $4\%$ 硅的钢称为硅钢。硅钢具有很高的导磁性，主要用作变压器铁芯。
+		\item 硅橡胶：既耐高温又耐低温的橡胶，用于制造火箭、导弹、飞机的零件和绝缘材料等。
+		\item 分子筛：是一种具有均匀微孔结构的铝硅酸盐，主要用作吸附剂和催化剂。
+	\end{itemize}
+
+	\paragraph{新型陶瓷}
+	\begin{itemize}
+		\item 高温结构陶瓷：又称工程陶瓷。耐高温、耐氧化、耐磨蚀。可用作洲际导弹的端头、火箭发动机的尾管及燃烧室等，也是汽车发动机、喷气发动机的理想材料。\ce{Al2O3} 可作高温结构陶瓷。
+		\item 压电陶瓷：能实现机械能与电能的相互转化。
+		\item 透明陶瓷：高纯、无气孔、透明的氧化物陶瓷（如氧化铝）及非氧化物陶瓷（如氟化物）等都属于透明陶瓷。具有优异的光学性质，耐高温，绝缘性好。可用于制高压钠灯的灯管、防弹汽车的车窗和坦克的观察窗等。
+		\item 超导陶瓷
+	\end{itemize}
+
+	\subsection{制备纯 \ce{Si}}
+	\cequation{Si\text{（粗）} + 3HCl \eq{高温} SiHCl3 + H2}
+	硅与干燥 \ce{HCl} 气体反应制得 \ce{SiHCl3}。
+	\excequation{SiHCl3 + H2 \eq{高温} Si\text{（纯）} + 3HCl}
+	\ce{SiHCl3} 与过量 \ce{H2} 在高温下制得纯硅。
+	\cequation{SiHCl3 + 3H2O = H2SiO3 v + 3HCl + H2 ^}
+	\ce{SiHCl3} 能与水反应。
+	\cequation{Si\text{（粗）} + 2Cl2 \eq{高温} SiCl4}
+	粗硅与干燥 \ce{Cl2} 反应制得 \ce{SiCl4}。
+	\excequation{SiCl4 + 2H2 \eq{高温} Si\text{（纯）} + 4HCl}
+	\ce{SiCl4} 与过量 \ce{H2} 在高温下反应制得纯硅。
+	\cequation{SiCl4 + 3H2O = H2SiO3 v + 4HCl}
+	\ce{SiCl4} 能与水发生反应。
+	\cequation{\under{\valence{Si}{+4}\valence{H}{-1}4}{硅烷} + 2O2 = SiO2 + 2H2O}
+	\ce{SiH4} 在空气中易自燃。
+	\cequation{SiO2 + 2Mg \eq{高温} Si + 2MgO}
+
+	\section{\ce{Cl}}
+
+	\subsection{\ce{Cl2}}
+	\cequation{2Na + Cl2 \eq{点燃} 2NaCl}
+	现象：钠剧烈燃烧并发出黄色火焰，产生白烟，黄绿色褪去。
+	\cequation{2Fe + 3Cl2 \eq{点燃} 2FeCl3}
+	现象：产生棕红色烟。
+	\cequation{Cu + Cl2 \eq{点燃} CuCl2}
+	现象：产生棕黄色烟。
+	\cequation{H2 + Cl2 \eqt{点燃}{或光照} 2HCl}
+	现象：安静燃烧，生成苍白色火焰，产生白雾。光照时爆炸。
+	\cequation{Cl2 + H2O <=> HCl + HClO}
+	在 25$^\circ$C 时，1 体积的水可溶解约 2 体积的氯气，氯气的水溶液称为氯水，呈黄绿色。对氯气可不用防倒吸。
+
+	近年来有科学家提出，使用氯气对自来水消毒时，氯气会与水中的有机物发生反应，生成的有机氯化物可能对人体有害。因此，人们已开始研究并试用新的自来水消毒剂，如二氧化氯（\ce{ClO2}）、臭氧等。
+	\cequation{Cl2 + 2NaOH = NaCl + NaClO + H2O}
+	作用：常温下制备 84 消毒液或漂白液。主要成分为 \ce{NaClO} 和 \ce{NaCl}，有效成分为 \ce{NaClO}。
+	\excequation{3Cl2 + 6NaOH \eq{\Heat} NaClO3 + 5NaCl + 3H2O}
+	\cequation{2Ca(OH)2 + 2Cl2 = Ca(ClO)2 + CaCl2 + 2H2O}
+	\excequation{2Ca(OH)2 + 2Cl2 = 2Ca^2+ + 2ClO- + 2Cl- + 2H2O}
+	作用：将氯气通入冷的消石灰（\ce{Ca(OH)2} 悬浊液）中制得漂白粉。如果氯气与 \ce{Ca(OH)2} 反应充分，并使次氯酸钙成为主要成分，则得到漂粉精。漂白粉和漂粉精的有效成分均为 \ce{Ca(ClO)2}。漂白粉的主要成分是 \ce{Ca(ClO)2} 和 \ce{CaCl2}；漂粉精的主要成分只有 \ce{Ca(ClO)2}，但漂粉精中也含有少量 \ce{CaCl2}。
+	\excequation{Ca(ClO)2 + CO2 + H2O = 2HClO + CaCO3 v}
+	此反应为漂白粉生效或失效的原理。
+
+	漂白液、漂白粉和漂白精既可作漂白棉、麻、纸张的漂白剂（不可漂白丝、毛），又可用作游泳池及环境的消毒剂。有些高级的游泳池用臭氧、活性炭进行消毒。
+
+	\subsection{\ce{HClO}}
+	\cequation{2HClO \eq{光照} 2HCl + O2 ^}
+	次氯酸是很弱的酸，不稳定，只存在于水溶液中，在光照下易分解放出氧气。旧制氯水成分为 \ce{HCl}，无色透明。
+	\cequation{ClO- + 2Br- + 2H+ = Br2 + Cl- + H2O}
+	次氯酸根具有强氧化性，在酸性条件下和碱性条件下均可氧化 \ce{S^2-}、\ce{SO3^2-}、\ce{I-}、\ce{Fe^2+}、\ce{Br-}。
+	\excequation{ClO- + Cl- + 2H+ = Cl2 ^ + H2O}
+	在酸性环境下，\ce{ClO-} 与 \ce{Cl-} 发生归中反应，故 \ce{ClO-} 和 \ce{Cl-} 不能在酸性环境下大量共存。
+
+	\subsection{\ce{Cl2} 的实验室制法}
+	\cequation{4HCl\text{（浓）} + MnO2 \eq{\Heat} Cl2 ^ + MnCl2 + 2H2O}
+	固液加热法。必须使用浓盐酸。依次通过饱和食盐水和浓硫酸除去挥发的 \ce{HCl} 和水蒸气。用向上排空气法或排饱和食盐水法收集氯气。用强碱溶液吸收尾气，不用 \ce{Ca(OH)2} 溶液吸收的原因是：\ce{Ca(OH)2} 的溶解度小，溶液浓度低，吸收不完全。用湿润的淀粉-\ce{KI}试纸验满（试纸立即变蓝）；或用蓝色石蕊试纸验满（试纸先变红后褪色）。
+	\excequation{6HCl\text{（浓）} + KClO3 = 3Cl2 ^ + KCl + 3H2O}
+	必须使用浓盐酸。属 \ce{ClO3-} 与 \ce{Cl-} 的归中反应。
+	\excequation{4HCl + Ca(ClO)2 = 2Cl2 ^ + CaCl2 + 2H2O}
+	\ce{ClO-} 与 \ce{Cl-} 的归中反应。
+	\excequation{14HCl + K2Cr2O7 = 3Cl2 ^ + 2KCl + 2CrCl3 + 7H2O}
+	\excequation{16HCl + 2KMnO4 = 5Cl2 ^ + 2KCl + 2MnCl2 + 8H2O}
+	强氧化剂氧化 \ce{Cl-}。
+
+	\subsection{卤素}
+	\ce{F2} 为淡黄绿色气体，\ce{Cl2} 为黄绿色气体，\ce{Br2} 为深红棕色液体、\ce{I2} 为紫黑色固体。
+
+	氯水呈黄绿色，溴水呈黄色至橙色，碘水呈棕黄色、黄色至褐色。
+
+	氯的四氯化碳溶液呈黄绿色，溴的四氯化碳溶液呈橙红色，碘的四氯化碳溶液呈紫红色。苯溶液颜色相同。
+	\cequation{H2 + F2 = 2HF}
+	在暗处能剧烈化合并发生爆炸，生成的氟化氢很稳定。
+	\excequation{H2 + Cl2 \eqt{点燃}{或光照} 2HCl}
+	点燃或光照发生反应，生成的氯化氢较稳定。
+	\excequation{H2 + Br2 \eq{\Heat} 2HBr}
+	加热至一定温度才能反应，生成的溴化氢不如氯化氢稳定。
+	\excequation{H2 + I2 <=>[\heat] 2HI}
+	不断加热才能缓慢反应；碘化氢不稳定，在同一条件下同时分解为 \ce{H2} 和 \ce{I2}，是可逆反应。
+	\cequation{X2 + 2NaOH = NaXO + NaX + H2O $\pod{\ce{X} = \ce{Cl}, \ce{Br}, \ce{I}}$}
+	\excequation{2F2 + 2H2O = 4HF + O2}
+	\cequation{X- + Ag+ = AgX v $\pod{\ce{X} = \ce{Cl}, \ce{Br}, \ce{I}}$}
+	\ce{AgCl} 为白色沉淀，\ce{AgBr} 为淡黄色沉淀，\ce{AgI} 为黄色沉淀。
+	\cequation{Cl2 + 2X- = X2 + 2Cl- $\pod{\ce{X} = \ce{Br}, \ce{I}}$}
+	\ce{Br2} 在有机层显红棕色或橙红色。\ce{I2} 在有机层显紫色、淡紫色或紫红色。
+	\excequation{Br2 + 2I- = I2 + 2Br-}
+	此反应用于检验 \ce{Br-} 或 \ce{I-}。操作时，先加入 \ce{CCl4}，再加入少量 \ce{Br2}，振荡。按该顺序加入试剂可观察到颜色的变化。
+	\cequation{I2 + SO2 + 2H2O = 2I- + SO4^2- + 4H+}
+	\cequation{I2 + I- <=> I3-}
+	碘在碘化钾溶液中的溶解度大于在纯水中的溶解度的原因。
+	应用：配制浓度更大的碘水。
+	\cequation{4I- + O2 + 4H+ = 2I2 + 2H2O}
+	\ce{I-} 在酸性条件下易被氧气氧化。
+	\cequation{2AgX \eq{光照} 2Ag + X2 $\pod{\ce{X} = \ce{Cl}, \ce{Br}, \ce{I}}$}
+	\ce{AgI} 在光照下分解吸热，环境温度降低，故用飞机播撒 \ce{AgI} 是实现人工降雨的一种方法。
+
+	\subsection{海水提溴}
+	\cequation{2NaBr + Cl2 = 2NaCl + Br2}
+	在此之前先蒸馏浓缩（或使用海水淡化后的浓海水），并用 \ce{H2SO4} 酸化，以控制溶液为酸性，减少 \ce{Cl2}、\ce{Br2} 与水反应的损失。在此之后通入空气和水蒸气将溴吹入吸收塔。
+	\cequation{Br2 + SO2 + 2H2O = 2HBr + H2SO4}
+	溴蒸气和吸收剂 \ce{SO2} 发生作用转化成氢溴酸以达到富集的目的。
+	\cequation{2HBr + Cl2 = 2HCl + Br2}
+	用氯气将其氧化得到溴，在此之后萃取、分液、蒸馏以提纯。
+
+	\subsection{海带提碘}
+	\cequation{2I- + Cl2 = 2Cl- + I2}
+	在此之前需在坩埚中灼烧海带得到海带灰，使接触面积增大便于溶解；过程中注意通风，以提供充足的氧气使海带完全变成灰烬。然后将其溶于水并过滤得到滤液。向滤液中通入氯气（或加入氯水）后萃取、分液、蒸馏（水浴加热，最后碘在蒸馏烧瓶中）以提纯。
+
+	\section{\ce{S}}
+
+	\subsection{\ce{S} 单质}
+	游离态的硫存在于火山喷口附近或地壳的岩层里，火山喷出物中含有大量的含硫化合物，如硫化氢、二氧化硫和三氧化硫等。化合态的硫主要以硫化物和硫酸盐的形式存在，如硫铁矿（\ce{$\valence{Fe}{+2}$S2}）、黄铜矿（\ce{$\valence{Cu}{+2}\valence{Fe}{+2}$S2}）、（生）石膏（\ce{CaSO4*2H2O}）（熟石膏：\ce{2CaSO4*H2O}）和芒硝（\ce{Na2SO4*10H2O}）。
+
+	硫（俗称硫黄）是一种黄色晶体，质脆，易研成粉末。硫不溶于水，微溶于酒精，易溶于二硫化碳（\ce{CS2}）。
+
+	\cequation{FeS2 + 2H+ = Fe^2+ + S + H2S ^}
+	\ce{S} 元素发生歧化反应。
+	\excequation{4FeS2 + 11O2 \eq{高温} 2Fe2O3 + 8SO2}
+	\cequation{Fe + S \eq{\Heat} \valence{Fe}{+2}S}
+	\excequation{2Cu + S \eq{\Heat} \valence{Cu}{+1}2S}
+	硫有弱氧化性，一般来说产物处于中间价态。
+	\excequation{Hg + S = \under{\valence{Hg}{+2}S}{硫化汞}}
+	唯一的与硫反应生成处于最高价态的产物的金属。
+	应用：水银撒到桌面或地面上应先收集水银，再撒上硫粉并进行处理。
+	\cequation{S + H2 \eq{\Heat} H2S}
+	表现氧化性。
+	\cequation{S + O2 \eq{点燃} SO2}
+	表现还原性。\ce{S} 不可点燃直接生成 \ce{SO3}。
+	\excequation{2SO2 + O2 <=>[V2O5][\heat] 2SO3}
+	工业上生产 \ce{SO3} 时，以 \ce{V2O5} 作催化剂，在常压下加热反应。
+	\cequation{3S + 6NaOH \eq{\Heat} 2Na2S + Na2SO3 + 3H2O}
+	\ce{S} 在碱性环境下发生歧化反应。
+	\excequation{2H2S + SO2 = 3S v + 2H2O}
+	\ce{S^2-} 和 \ce{SO3^2-} 在酸性条件下发生归中反应。
+	\cequation{S + 2H2SO4\text{（浓）} \eq{\Heat} 3SO2 ^ + 2H2O}
+	\cequation{S + 6HNO3\text{（浓）} \eq{\Heat} 6NO2 ^ + H2SO4 + 2H2O}
+	\cequation{\under{S}{硫黄} + \under{2KNO3}{硝石} + \under{3C}{木炭} = 3CO2 ^ + N2 ^ + K2S}
+	黑火药的反应原理。
+
+	\subsection{\ce{S} 的氧化物}
+	\ce{SO2} 有毒，可作消毒剂。葡萄酒中的 \ce{SO2} 既可杀菌，又可作抗氧化剂。二氧化硫具有漂白性，它能漂白某些有色物质。工业上常用二氧化硫来漂白纸浆、毛、丝、草帽辫等。二氧化硫与某些有色物质生成的无色物质不稳定，易分解，使有色物质恢复原来的颜色。
+	\cequation{SO2 + H2O <=> H2SO3}
+	\ce{SO2} 可使紫色石蕊试液变红，但不能漂白石蕊试液。
+	\excequation{2H2SO3 + O2 = 2H2SO4}
+	\ce{H2SO3} 在空气中易被氧化，以上两个反应是形成硫酸性酸雨的主要途径。煤等化石燃料的燃烧是形成酸雨最主要的原因。
+	\excequation{2SO2 + O2 <=>[\text{催化剂}][\heat] 2SO3}
+	空气中的灰尘可作催化剂，该反应是形成硫酸性酸雨的次要途径。
+	\cequation{SO2 + CaO \eq{\Heat} CaSO3}
+	\excequation{2CaSO3 + O2 \eq{\Heat} 2CaSO4}
+	钙基固硫法处理 \ce{SO2} 的终产物为 \ce{CaSO4}。
+	\cequation{SO2 + \under{2NaOH}{(过量)} = Na2SO3 + H2O}
+	\cequation{SO2 + X2 + H2O = 2HX + H2SO4 $\pod{\ce{X} = \ce{Cl}, \ce{Br}, \ce{I}}$}
+	\cequation{SO2 + 2Fe^3+ + 2H2O = 2Fe^2+ + SO4^2- + 4H+}
+	\cequation{SO2 + H2O2 = H2SO4}
+	\excequation{SO2 + Na2O2 = Na2SO4}
+	\cequation{SO3 + H2O = H2SO4}
+	\ce{SO3} 在标况下是固体，熔点 16.8$^\circ$C，沸点 44.8$^\circ$C。
+	\cequation{\under{3SO2}{(过量)} + Ba^2+ + 2NO3- + 2H2O = BaSO4 v + 2NO ^ + 2SO4^2- + 4H+}
+	\excequation{3SO2 + \under{3Ba^2+}{(过量)} + 2NO3- + 2H2O = 3BaSO4 v + 2NO ^ + 4H+}
+	向 \ce{Ba(NO3)2} 通入 \ce{SO2}，\ce{Ba^2+} 比 \ce{NO3-} 先不足。
+
+	\subsection{硫酸}
+	\cequation{C6H12O6 ->[\text{浓硫酸}] 6C + 6H2O}
+	该反应体现了浓硫酸的脱水性。
+	\cequation{CuSO4*5H2O \eq{浓硫酸} CuSO4 + 5H2O}
+	该反应体现了浓硫酸的吸水性。
+	\cequation{2H2SO4\text{（浓）} + Cu \eq{\Heat} CuSO4 + SO2 ^ + 2H2O}
+	该反应体现了浓硫酸的强氧化性和酸性。
+	\excequation{2H2SO4\text{（浓）} + Zn = ZnSO4 + SO2 ^ + 2H2O}
+	\excequation{2H2SO4\text{（浓）} + C \eq{\Heat} 2SO2 ^ + CO2 ^ + 2H2O}
+	浓硫酸具有强氧化性，不能用于干燥 \ce{H2S}、\ce{HI}、\ce{HBr}。
+	\cequation{Na2SO3 + H2SO4($70\%$) = SO2 ^ + Na2SO4 + H2O}
+	实验室制取 \ce{SO2}。不使用 $98\%$ 的浓硫酸的原因是：硫酸并未电离，仍以分子形式存在，没有足够的 \ce{H+} 与 \ce{SO3^2-} 反应。
+	\cequation{2NaCl + H2SO4\text{（浓）} \eq{\Heat} 2HCl ^ + Na2SO4}
+	实验室制取 \ce{HCl} 气体。原理：难挥发性酸制易挥发性酸。不能用浓硫酸制取 \ce{HBr} 气体和 \ce{HI} 气体，它们会与浓硫酸反应，需要用浓磷酸代替浓盐酸。
+	\excequation{NaCl + H2SO4\text{（浓）} = HCl ^ + NaHSO4}
+	\excequation{NaBr + H3PO4\text{（浓）} = HBr ^ + NaH2PO4}
+	\excequation{KI + H3PO4\text{（浓）} = HI ^ + KH2PO4}
+	\excequation{\under{CaF2}{萤石} + H2SO4\text{（浓）} \eq{\Heat} 2HF ^ + CaSO4}
+	该反应不可在玻璃容器中进行，要在铅皿中进行。
+
+	\subsection{四种常见的 \ce{SO2} 尾气处理方法}
+
+	\paragraph{钙基固硫法}
+	将生石灰和含硫的煤混合，燃烧时使硫转移到煤渣中。
+	\cequation{2CaO + 2SO2 + O2 \eq{\Heat} 2CaSO4}
+	可以用石灰石代替生石灰，煤燃烧产生的高温可使石灰石分解生成生石灰。
+
+	\paragraph{氨水脱硫法}
+	雾化的氨水与烟气中的 \ce{SO2} 直接接触并吸收。
+	\cequation{2NH3 + SO2 + H2O = (NH4)2SO3}
+	\excequation{2(NH4)2SO3 + O2 = 2(NH4)2SO4}
+	也可能生成 \ce{NH4HSO3} 再进行进一步的氧化。
+
+	\paragraph{钠碱脱硫法}
+	用 \ce{NaOH} 和 \ce{Na2CO3} 吸收烟气中的 \ce{SO2}，得到 \ce{Na2SO3} 和 \ce{NaHSO3}。
+	\cequation{Na2CO3 + SO2 = Na2SO3 + CO2}
+	\excequation{2NaOH + SO2 = Na2SO3 + H2O}
+	\excequation{Na2SO3 + SO2 + H2O = 2NaHSO3}
+
+	\paragraph{双碱脱硫法}
+	先利用烧碱吸收 \ce{SO2}，再利用熟石灰浆液进行再生，再生后的 \ce{NaOH} 碱液可循环使用。
+	\cequation{2NaOH + SO2 = Na2SO3 + H2O}
+	\excequation{2Na2SO3 + O2 = 2Na2SO4}
+	吸收反应。
+	\cequation{Na2SO3 + Ca(OH)2 = CaSO3 v + 2NaOH}
+	\excequation{Na2SO4 + Ca(OH)2 = CaSO4 v + 2NaOH}
+	再生反应。
+
+	\subsection{\ce{SO4^2-} 的检验}
+	\cequation{Ba^2+ + SO4^2- = BaSO4 v}
+	先加入足量盐酸酸化，若产生沉淀，则过滤取上层清液，再滴加 \ce{BaCl2} 溶液。其中的杂质可能发生以下反应：
+	\excequation{2H+ + SO3^2- = H2O + SO2 ^}
+	\excequation{2H+ + CO3^2- = H2O + CO2 ^}
+	\excequation{Ag+ + Cl- = AgCl v}
+	\excequation{Pb^2+ + 2Cl- = \under{PbCl2 v}{(白色)}}
+
+	\subsection[负二价硫]{\ce{$\valence{S}{-2}$}}
+	\cequation{2H2S(aq) + O2 = 2S v + 2H2O}
+	\cequation{\under{2H2S(g)}{(过量)} + O2 \eq{点燃} 2S + 2H2O}
+	\excequation{2H2S(g) + \under{3O2}{(过量)} \eq{点燃} 2SO2 + 2H2O}
+	\cequation{H2S + CuSO4 = CuS v + H2SO4}
+	弱酸制强酸。\ce{PbS}、\ce{Ag2S}、\ce{HgS}、\ce{CuS} 不溶于酸。
+	\cequation{2Na2S + Na2SO3 + 3H2SO4 = 3Na2SO4 + 3S v + 3H2O}
+	在酸性环境下归中；\ce{S} 在碱性环境下歧化。
+	\cequation{H2S + H2SO4\text{（浓）} = S v + SO2 ^ + 2H2O}
+	首先发生归中反应，然后根据用量，\ce{H2S} 与 \ce{SO2} 或 \ce{H2SO4} 与 \ce{S} 继续反应。但硫化氢与稀硫酸不反应。因此不能用浓硫酸干燥 \ce{H2S}；类似地，\ce{HBr}、\ce{HI} 也不能用浓硫酸干燥。
+	\cequation{H2S + 2Ag = Ag2S + H2 ^}
+	该反应为银首饰变黑的原因。\ce{FeS}、\ce{CuS}、\ce{Ag2S}、\ce{PbS} 均显黑色。
+
+	\subsection[硫代硫酸钠]{\ce{$\under{Na2\valence{S}{+2}2O3}{硫代硫酸钠}$}}
+	\cequation{S2O3^2- + 2H+ = S v + SO2 ^ + H2O}
+	在酸性条件下既产生沉淀又产生气体。但由于 \ce{SO2} 1 : 40 溶于水，观察不到气泡。
+	\cequation{S2O3^2- + 4Cl2 + 5H2O = 2SO4^2- + 8Cl- + 10H+}
+	硫一般被氧化至正六价。
+
+	\subsection{\ce{H2O2}}
+	\cequation{H2O2 + 2Fe^2+ + 2H+ = 2Fe^3+ + 2H2O}
+	体现了 \ce{H2O2} 的氧化性。双氧水不能氧化 \ce{Br-}、\ce{Cl-}。
+	\cequation{5H2O2 + 2MnO4- + 6H+ = 2Mn^2+ + 5O2 ^ + 8H2O}
+	体现了 \ce{H2O2} 的还原性。
+	\cequation{2H2O2 \eqt{\ce{MnO2 / Cu^2+ / Fe^3+}}{或 \Heat} 2H2O + O2 ^}
+	\ce{H2O2} 的催化分解或加热分解，发生歧化反应。高浓度的 \ce{H2O2} 也易分解。
+	\cequation{2H2O2 + \under{N2H4}{联氨，肼} = N2 + 4H2O}
+	联氨作火箭燃料，过氧化氢作氧化剂。
+	\cequation{H2O2 + H2S = S v + 2H2O}
+	\excequation{Na2S + 4H2O2 = Na2SO4 + 4H2O}
+	酸性条件下，\ce{H2O2} 氧化 \ce{H2S} 生成 \ce{S}；碱性条件下，\ce{Na2S} 被氧化生成 \ce{Na2SO4}。
+	\cequation{Cu + H2O2 + H2SO4 = CuSO4 + 2H2O}
+	该反应常伴有气泡生成，原因是生成的 \ce{Cu^2+} 催化 \ce{H2O2} 分解。
+
+	\subsection{\ce{O3}}
+	\cequation{2O3 \eq{一定条件} 3O2}
+	\excequation{3O2 \eq{放电} 2O3}
+	\ce{O3} 具有不稳定性。\ce{O2} 与 \ce{O3} 的转化不是氧化还原反应，因为没有化合价的改变。
+	\cequation{O3 + 2KI + H2O = I2 + 2KOH + O2}
+	体现了 \ce{O3} 的强氧化性。其中所有臭氧都作氧化剂（不看原子看物质）。现象：湿润的淀粉-\ce{KI}试纸变蓝。
+
+	\ce{O3} 可氧化 \ce{Ag}、\ce{Hg} 等金属；可用于漂白和消毒。
+
+	\section{\ce{N}}
+
+	\subsection{\ce{N2}}
+	\cequation{N2 + O2 \eqt{放电}{或高温} 2NO}
+	雷雨天会发生该反应，在汽车汽缸中也会发生该反应。
+	\cequation{N2 + 3H2 <=>[\text{高温高压}][\text{催化剂}] 2NH3}
+	将游离态氮转变为化合态氮的过程叫氮的固定，固定氮的方式有自然固氮和人工固氮（合成氨工业）。研究证明，若反应物按化学计量比混合，平衡时生成物的体积分数有最大值。
+	\cequation{N2 + 3Mg \eq{点燃} Mg3N2}
+	\excequation{Mg3N2 + 6H2O = 3Mg(OH)2 + 2NH3 ^}
+	实验时应注意左吸右挡。类似的物质与水反应时（如 \ce{CaC2}），与水发生复分解反应，生成物脱水至稳定状态。注意 \ce{Mg3N2} 的相对分子质量与 \ce{CaCO3} 相同，均为 100。
+	\excequation{SiCl4 + 3H2O = 4HCl + H2SiO3}
+	\excequation{PCl3 + 3H2O = 3HCl + \under{H3PO3}{次磷酸}}
+	\excequation{PCl5 + 4H2O = 5HCl + \under{H3PO4}{磷酸}}
+	\excequation{CaC2 + 2H2O -> Ca(OH)2 + CH#CH ^}
+	实验室制取乙炔。有 \ce{H2S}、\ce{PH3} 杂质气体产生，用 \ce{CuSO4} 溶液吸收杂质（\ce{NaOH} 溶液不能吸收 \ce{PH3}）。
+
+	在圆底烧瓶中放入几小块电石，旋开分液漏斗的活塞，逐滴加入饱和食盐水（以减缓电石与水的反应速率），便可产生乙炔气体。
+
+	\subsection{\ce{N} 的氧化物}
+	\cequation{\under{2NO2}{(红棕色)} <=> \under{N2O4}{(无色)} \qquad $\Delta H < 0$}
+	\cequation{NO_x + C_nH_m ->[\text{紫外线}] \cdots}
+	\ce{NO_x} 在紫外线作用下，与碳氢化合物发生一系列光化学反应，产生一种有毒的烟雾。
+	\cequation{2NO + O2 = 2NO2}
+	\ce{NO} 在空气中迅速转化为 \ce{NO2}。
+	\cequation{3NO2 + H2O = 2HNO3 + NO}
+	\ce{NO2} 不是酸性氧化物，因为没有对应化合价的酸。
+	\cequation{NO + NO2 + H2O = 2HNO2}
+	\excequation{2HNO2 + O2 = 2HNO3}
+	以上三个反应是形成硝酸型酸雨的途径。
+	\cequation{2NO + 2CO \eqt{催化剂}{\Heat} N2 + 2CO2}
+	\excequation{2NO + O2 + 4CO \eqt{催化剂}{\Heat} N2 + 4CO2}
+	汽车中用催化剂转化 \ce{NO} 和 \ce{CO}，\ce{NO} 可能先被氧化成 \ce{NO2}。由于汽车有尾气催化装置，故汽车排出尾气不是形成酸雨最主要的原因。
+	\cequation{4x NH3 + 6NO_x \eqt{催化剂}{\Heat} (2$x$ + 3)N2 + 6x H2O}
+	\excequation{4NH3 + 6NO \eqt{催化剂}{\Heat} 5N2 + 6H2O}
+	\excequation{8NH3 + 6NO2 \eqt{催化剂}{\Heat} 7N2 + 12H2O}
+	催化转化法处理 \ce{NO_x}。氨气与氮氧化物发生归中反应。
+	\cequation{2NO2 + 2NaOH = NaNO3 + NaNO2 + H2O}
+	二氧化氮通入氢氧化钠溶液发生歧化反应。
+	\cequation{NO2 + NO + 2NaOH = 2NaNO2 + H2O}
+	当 $n(\ce{NO2}) \ge n(\ce{NO})$ 时，\ce{NO2}、\ce{NO} 的混合气体能被足量烧碱溶液完全吸收。以上两个反应一般适合工业尾气中 \ce{NO_x} 的处理。若 \ce{NO} 过量，通入空气氧化后再吸收。
+	\cequation{NO2 + SO2 = NO + SO3}
+	\ce{NO2} 可氧化 \ce{$\valence{S}{+4}$} 至 \ce{$\valence{S}{+6}$}，生成 \ce{NO}。
+	\cequation{4NO + 3O2 + 2H2O = 4HNO3}
+	\cequation{4NO2 + O2 + 2H2O = 4HNO3}
+	\cequation{\under{C2H8N2}{偏二甲肼} + 2N2O4 = 2CO2 ^ + 3N2 ^ + 4H2O ^}
+	火箭使用偏二甲肼做燃料，四氧化二氮为氧化剂，燃烧反应放出大量的热和大量气体，把火箭送入太空。
+
+	\subsection{\ce{HNO3}}
+	\cequation{4HNO3 \eqt{光照}{或 \Heat} 4NO2 ^ + O2 ^ + 2H2O}
+	硝酸具有不稳定性，在阴暗低温处用棕色细口瓶保存。
+
+	久置的浓硝酸中有大量 \ce{NO2} 以分子形式溶于浓硝酸中，呈黄色（浓硝酸中的水较少，\ce{NO2} 没有与水发生反应）。
+
+	\excequation{2AgNO3(s) \eqt{光照}{或 \Heat} 2Ag + 2NO2 ^ + O2 ^}
+	\excequation{2Cu(NO3)2(s) \eq{\Heat} 2CuO + 4NO2 ^ + O2 ^}
+	活动性在铜到镁之间的盐发生该反应。
+	\excequation{2NaNO3(s) \eq{\Heat} 2NaNO2 + O2 ^}
+	钾盐、钙盐和钠盐发生该反应。
+	\cequation{3Ag + 4HNO3 = 3AgNO3 + NO ^ + 2H2O}
+	\excequation{Ag + 2HNO3\text{（浓）} = AgNO3 + NO2 ^ + H2O}
+	应用：用稀硝酸清洗银镜反应后的试管壁。相比浓硝酸，溶解等量银所用硝酸量更少，产生的污染物更少。
+
+	浓硝酸可与除 \ce{Au}、\ce{Pt} 以外的金属反应。王水（浓硝酸与浓盐酸按 1 : 3 的体积比混合）可溶 \ce{Au} 和 \ce{Pt}。王水的存在说明 \ce{NO3-} 不可氧化 \ce{Cl-}。
+	\cequation{C + 4HNO3\text{（浓）} \eq{\Heat} CO2 ^ + 4NO2 ^ + 2H2O}
+	\excequation{S + 6HNO3\text{（浓）} \eq{\Heat} H2SO4 + 6NO2 ^ + 2H2O}
+	\excequation{P + 5HNO3\text{（浓）} \eq{\Heat} H3PO4 + 5NO2 ^ + H2O}
+	非金属单质与强氧化性酸反应一般要用酸的浓溶液并加热。非金属单质被浓 \ce{HNO3} 氧化为最高价含氧酸。
+	\cequation{3Fe^2+ + NO3- + 4H+ = 3Fe^3+ + NO ^ + 2H2O}
+	硝酸根的氧化性仅在酸性环境下表现。\ce{NO3-} 能氧化 \ce{S^2-}、\ce{SO3^2-}、\ce{I-}、\ce{Fe^2+}，不能氧化 \ce{Br-}、\ce{Cl-}。
+	\cequation{R-OH + HNO3 <=>[\text{浓硫酸}][\heat] R-O-NO2 + H2O}
+	该反应属于酯化反应。
+	\cequation{\chemfig{**[0, 360]6([0, 0.3]------)} + HNO3\text{（浓）} ->[\text{浓硫酸}][\heat] \chemfig{**[0, 360]6([0, 0.3]---(-NO_2)---)} + H2O}
+	硝化反应。含有苯基的蛋白质遇浓硝酸变黄色（称为蛋白质的颜色反应），其本质也是硝化反应。
+	\excequation{\chemfig{**[0, 360]6([0, 0.3]----(-CH_3)--)} + HNO3\text{（浓）} ->[\text{浓硫酸}][\heat] \chemfig{**[0, 360]6([0, 0.3]---(-NO_2)-(-CH_3)--)} \text{ 或 } \chemfig{**[0, 360]6([0, 0.3]-(-NO_2)---(-CH_3)--)} + H2O}
+	\excequation{\chemfig{**[0, 360]6([0, 0.3]----(-CH_3)--)} + 3HNO3\text{（浓）} ->[\text{浓硫酸}][\heat] \chemfig{**[0, 360]6([0, 0.3]-(-NO_2)--(-NO_2)-(-CH_3)-(-O_2N)-)} + 3H2O}
+
+	\subsection{\ce{NH3}、\ce{NH4+} 和铵盐}
+	\cequation{NH3 + H2O <=> \under{NH3*H2O}{(绝大部分)} <=> NH4+ + OH-}
+	氨气 1 : 700 溶于水，需防倒吸。\ce{NH3} 沸点较高，易液化，液氨汽化时要吸收大量的热，可作制冷剂。氨气密度比空气小，有强烈刺激性气味。空间结构呈三角锥形。\ce{NH3} 是 \ce{N} 的最简氢化物，但不是唯一氢化物，还有 \ce{$\under{N2H4}{联氨，肼}$} 等。
+	\cequation{NH3 + HCl = NH4Cl(s)}
+	氨气在浓盐酸上方与挥发的 \ce{HCl} 气体可发生该反应，产生大量白烟。
+	\excequation{NH3 + HNO3 = NH4NO3(s)}
+	\excequation{2NH3 + H2SO4 = (NH4)2SO4}
+	浓硝酸、冰醋酸同理。但硫酸不挥发，故 \ce{NH3} 只能通入硫酸发生反应，无白烟生成。
+	\cequation{NH3*H2O + \under{H2S}{(过量)} = NH4HS + H2O}
+	\excequation{\under{2NH3*H2O}{(过量)} + H2S = (NH4)2S + 2H2O}
+	氨水显碱性，还可与 \ce{CO2}、\ce{SO2} 等发生反应。
+	\cequation{CH3COONH4 + H2O <=> CH3COOH + NH3*H2O}
+	醋酸铵发生双水解反应恰好显中性。
+	\cequation{AgNO3 + 3NH3*H2O = \under{[Ag(NH3)2]OH}{氢氧化二氨合银} + NH4NO3 + 2H2O}
+	离子方程式：
+	\excequation{Ag+ + 2NH3*H2O = [Ag(NH3)2]+ + 2H2O}
+	制备银氨溶液。将 $2\%$ 的稀氨水滴加至 1 mL $2\%$ 的 \ce{AgNO3} 溶液，至最初产生的沉淀恰好溶解为止，制得银氨溶液。
+
+	氢氧化二氨合银是一种强碱。分反应：
+	\excequation{NH3*H2O + AgNO3 = AgOH v + NH4NO3}
+	\excequation{AgOH + 2NH3*H2O = [Ag(NH3)2]OH + 2H2O}
+	若加入过量氨水，会导致银镜反应的效果不好，生成的银不能很好地附着在试管壁上，呈黑色。
+	\cequation{NH3*H2O \eq{\Heat} NH3 ^ + H2O}
+	氨水为可溶性一元强碱，易挥发；不稳定，易分解。
+
+	利用该反应快速制氨气：向浓氨水中加入 \ce{NaOH} 固体或 \ce{CaO} 固体。两者均可增大 \ce{OH-} 的浓度使平衡移动，均可放热促进该反应的发生；后者还可与水反应，增大氨水的浓度。
+	\cequation{4NH3 + 5O2 \eqt{Pt}{\Heat} 4NO + 6H2O}
+	氨的催化氧化。该反应是工业制硝酸的第一步（接下来用 \ce{O2} 氧化 \ce{NO} 并将 \ce{NO2} 溶于水得硝酸）。因为 \ce{NO2} 加热后不稳定，会分解为 \ce{NO} 和 \ce{O2}，故生成物中只有 \ce{NO}。
+	\cequation{2NH3 + \under{3Cl2}{(过量)} = N2 + 6HCl}
+	\excequation{\under{8NH3}{(过量)} + 3Cl2 = N2 + 6NH4Cl(s)}
+	现象：产生大量白烟。可用浓氨水检查氯气管道是否泄漏。
+	\cequation{2NH3 + 3CuO \eq{\Heat} N2 + 3Cu + 3H2O}
+	\cequation{4NH3(g) + \under{3O2}{(纯)} \eq{点燃} 2N2 + 6H2O}
+	在不使用催化剂时生成最稳定产物。
+	\cequation{2NH4Cl + Ca(OH)2 \eq{\Heat} 2NH3 ^ + CaCl2 + 2H2O}
+	氨气的实验室制法。用碱石灰干燥。用向下排空气法收集；收集时，一般在试管口塞一团干燥的棉花球，可减少 \ce{NH3} 与空气的对流速度，收集到纯净的 \ce{NH3}。用湿润的红色石蕊试纸或蘸有浓盐酸的玻璃棒置于试管口验满。只能使用 \ce{NH4Cl} 的原因是很多其它铵盐受热分解会发生氧化还原反应生成其它气体。
+	\cequation{NH4Cl \eq{\Heat} NH3 ^ + HCl ^}
+	现象：管底固体消失，管口出现固体。
+	\cequation{NH4HCO3 \eq{\Heat} NH3 ^ + CO2 ^ + H2O}
+	\excequation{(NH4)2CO3 \eq{\Heat} 2NH3 ^ + CO2 ^ + H2O}
+	应用：加热碳酸（氢）铵固体，将生成的气体通过装有碱石灰的干燥管得到 \ce{NH3}。
+
+	铵盐受热均易分解。
+	\cequation{NH4+ + OH- = NH3*H2O}
+	\excequation{NH4+ + \under{OH-}{(浓)} \eq{\Heat} NH3 ^ + H2O}
+	加入氢氧化钠浓溶液（或固体）并加热才会有氨气溢出。加入稀溶液只能写生成一水合氨。
+
+	检验 \ce{NH4+} 的操作：加入 \ce{NaOH}（浓）溶液，将湿润的红色石蕊试纸置于试管口，加热，产生无色有刺激性气味气体，湿润的红色石蕊试纸变蓝，说明溶液中存在 \ce{NH4+}。
+	\cequation{Ba(OH)2*8H2O + 2NH4Cl = BaCl2 + 2NH3 ^ + 10H2O}
+	操作：将 \ce{Ba(OH)2*8H2O} 晶体用\uline{研钵}研细后与 \ce{NH4Cl} 晶体一起放入烧杯中，并将烧杯放在滴有几滴水的玻璃片或小木板上，用玻璃棒快速搅拌。
+
+	现象：产生有刺激性气味的气体，该气体能使湿润的紫色石蕊试纸变蓝；烧杯变凉，玻璃片（或小木板）粘到了烧杯底部。
+
+	另外，\ce{NH4NO3} 溶于水吸热，铵盐溶于水一般都吸热。
+
+	另外，\ce{NH4NO3} 溶于水吸热。铵盐溶于水一般都吸热。
+	\cequation{CaCl2 + 8NH3 = CaCl2*8NH3}
+	氯化钙会与氨气反应，故不可用无水氯化钙干燥氨气。
+
+	\section{其他内容}
+
+	\cequation{P2O5 + H2O = 2\under{HPO3}{偏磷酸}}
+	\ce{P2O5} 与冷水反应生成剧毒的偏磷酸，故 \ce{P2O5} 不能作为食品干燥剂。
+	\cequation{H3BO3 + H2O <=> \under{[B(OH)4]-}{四羟基合硼根} + H+}
+	硼酸是一元弱酸，它本身不电离。
+
+	\subsection{《化学反应原理》}
+	\cequation{PCl3 + Cl2 <=> PCl5}
+	该反应为可逆反应。
+	\cequation{Cr2O7^2- + H2O <=> 2CrO4^2- + 2H+}
+	\ce{K2Cr2O7} 为橙色，\ce{K2CrO4} 为黄色。检查酒驾时所用仪器中的固体为含有酸性 \ce{K2Cr2O7} 的硅胶。乙醇与 \ce{K2Cr2O7} 反应生成绿色的 \ce{Cr2(SO4)3}。
+	\cequation{H2C2O4 \eq{\Heat} CO ^ + CO2 ^ + H2O}
+	不可加热草酸晶体来检验是否含结晶水，因为草酸晶体分解会生成水。
+	\cequation{2KMnO4 + 5H2C2O4 + 3H2SO4 = K2SO4 + 2MnSO4 + 10CO2 ^ + 8H2O}
+	通过观察溶液褪色的快慢来看反应速率，而不能通过观察气泡来判断。注意仅当草酸过量时溶液才会褪色。
+	\cequation{MgCl2*6H2O \eq{\Heat} \under{Mg(OH)Cl}{碱式氯化镁} + HCl ^ + 5H2O}
+	\ce{MgCl2*6H2O} 受热时发生水解，生成 \ce{Mg(OH)Cl}。
+	\cequation{TiCl4 + \under{($x$ + 2)H2O}{(过量)} <=> TiO2 * x H2O v + 4HCl}
+	制备时加入大量的水，同时加热，促进水解趋于完全，所得 \ce{TiO2 * x H2O} 经焙烧得 \ce{TiO2}。类似的方法也可用来制备 \ce{SnO}、\ce{SnO2}、\ce{Sn2O3} 等。
+
+	\subsection{电化学}
+	\cequation{\valence{Zn}{0} + 2\valence{Mn}{+4}O2 + 2NH4Cl = \under{2\valence{Mn}{+3}O(OH)}{氢氧化氧锰} + \valence{Zn}{+2}(NH3)2Cl2}
+	普通锌锰干电池。
+	\cequation{\valence{Zn}{0} + 2\valence{Mn}{+4}O2 + 2H2O = \valence{2Mn}{+3}O(OH) + \valence{Zn}{+2}(OH)2}
+	碱性锌锰电池（以 \ce{KOH(aq)} 为电解质）。相比普通锌锰电池，它的比能量和可储存时间均有所提高，适用于大电流和连续放电。
+	\cequation{\valence{Zn}{0} + \valence{Ag}{+1}2O + H2O = \valence{Zn}{+2}(OH)2 + 2\valence{Ag}{0}}
+	锌银电池（以 \ce{KOH(aq)} 为电解质）。比能量大、电压稳定、储存时间长，适用于小电流连续放电，常制成纽扣式微型电池。
+	\cequation{\valence{Pb}{0}(s) + \valence{Pb}{+4}O2(s) + 2H2SO4(aq) {\xLongleftrightarrow[\text{充电}]{\text{放电}}} 2\valence{Pb}{+2}SO4(s) + 2H2O(l)}
+	铅蓄电池（以 \ce{H2SO4(aq)} 为电解质）。电压稳定，但比能量低，笨重，废弃电池污染环境。
+	\cequation{2NaCl + 2H2O \eq{电解} 2NaOH + H2 ^ + Cl2 ^}
+	习惯上把电解饱和食盐水的工业生产叫做氯碱工业。工业生产时，这个反应在电解槽中进行。
+	\cequation{2NaCl\text{（熔融）} \eq{电解} 2Na + Cl2 ^}
+	\cequation{Fe + 2H+ = Fe^2+ + H2 ^}
+	铁和钢铁里少量的碳构成了原电池。酸性环境中引起铁的析氢腐蚀。
+	\cequation{2Fe + O2 + 2H2O = 2Fe(OH)2}
+	中性环境中引起铁的吸氧腐蚀。生成的 \ce{Fe(OH)2} 继续与空气中的 \ce{O2} 反应，生成 \ce{Fe(OH)3}。\ce{Fe(OH)3} 脱去一部分水就生成 \ce{Fe2O3 * x H2O}，它是铁锈的主要成分。铁锈疏松地覆盖在钢铁表面，不能阻止钢铁继续腐蚀。析氢腐蚀和吸氧腐蚀使钢铁在潮湿的空气中易生锈。
+
+	电化学腐蚀和化学腐蚀的区别是：电化学腐蚀过程伴随有电流产生，化学腐蚀过程却没有。电化学腐蚀比化学腐蚀要普遍得多，腐蚀速度也快得多。
+
+	电化学腐蚀的例子：将锌棒和铁棒用导线相连，插入盛有稀盐酸的溶液中，形成原电池，锌被腐蚀（牺牲阳极的阴极保护法）。
+	化学腐蚀的例子：将铁棒（纯铁）直接插入盛有稀盐酸的溶液中，铁被腐蚀。
+
+\end{document}
